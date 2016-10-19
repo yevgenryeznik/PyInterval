@@ -18,4 +18,5 @@ def fun(x):
 
 a, b = 2, 5
 integral_value = midpoint(fun, -2, 2)
+
 print integral_value, " ", 2*integral_value.rad
