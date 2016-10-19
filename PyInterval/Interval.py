@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import rounding
 import numpy as np
+import Rounding
 
 
 class Interval(object):
@@ -17,13 +17,13 @@ class Interval(object):
             upp = low
         if low > upp:
             raise ValueError('Lower value {low:f} is greater than upper value {upp:f}'.format(low=low, upp=upp))
-        rounding.setRoundDown()
+        Rounding.setRoundDown()
         self.low = float(low)
 
-        rounding.setRoundUp()
+        Rounding.setRoundUp()
         self.upp = float(upp)
 
-        rounding.setRoundNear()
+        Rounding.setRoundNear()
         self.mid = 0.5 * (upp + low)
         self.rad = 0.5 * (upp - low)
         self.mig = (1 - (low <= 0 & 0 <= upp)) * np.min([np.abs(low), np.abs(upp)])
@@ -43,13 +43,13 @@ class Interval(object):
         if isinstance(other, (int, float)):
             other = Interval(float(other), float(other))
 
-        rounding.setRoundDown()
+        Rounding.setRoundDown()
         low = self.low + other.low
 
-        rounding.setRoundUp()
+        Rounding.setRoundUp()
         upp = self.upp + other.upp
 
-        rounding.setRoundNear()
+        Rounding.setRoundNear()
         return Interval(low, upp)
 
     # addition operator overloading (used in the case 'number' + 'interval' by converting 'number' to 'interval')
@@ -64,13 +64,13 @@ class Interval(object):
         if isinstance(other, (int, float)):
             other = Interval(other, other)
 
-        rounding.setRoundDown()
+        Rounding.setRoundDown()
         low = self.low - other.upp
 
-        rounding.setRoundUp()
+        Rounding.setRoundUp()
         upp = self.upp - other.low
 
-        rounding.setRoundNear()
+        Rounding.setRoundNear()
         return Interval(low, upp)
 
     # subtraction operator overloading (used in the case 'number' - 'interval' by converting 'number' to 'interval')
@@ -87,13 +87,13 @@ class Interval(object):
         low1, upp1 = self.low, self.upp
         low2, upp2 = other.low, other.upp
 
-        rounding.setRoundDown()
+        Rounding.setRoundDown()
         low = np.min([low1 * low2, low1 * upp2, upp1 * low2, upp1 * upp2])
 
-        rounding.setRoundUp()
+        Rounding.setRoundUp()
         upp = np.max([low1 * low2, low1 * upp2, upp1 * low2, upp1 * upp2])
 
-        rounding.setRoundNear()
+        Rounding.setRoundNear()
         return Interval(low, upp)
 
     # multiplication operator overloading (used in the case 'number' * 'interval' by converting 'number' to 'interval')
@@ -112,14 +112,14 @@ class Interval(object):
             raise ValueError('Impossible operation: division by the interval which contains zero')
 
         else:
-            rounding.setRoundDown()
+            Rounding.setRoundDown()
             low = 1.0 / other.upp
 
-            rounding.setRoundUp()
+            Rounding.setRoundUp()
             upp = 1.0 / other.low
 
             other = Interval(low, upp)
-            rounding.setRoundNear()
+            Rounding.setRoundNear()
 
             return self.__mul__(other)
 
@@ -214,17 +214,17 @@ class Interval(object):
 
             elif other > 0:
                 if other % 2 != 0:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     low = self.low**other
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     upp = self.upp**other
 
                 else:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     low = self.mig**other
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     upp = self.mag**other
             else:
                 low = 1.0
@@ -239,10 +239,10 @@ class Interval(object):
                     upp = (1.0/self.low)**(-other)
 
                 elif other > 0:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     low = self.low**other
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     upp = self.upp**other
 
                 else:
@@ -252,7 +252,7 @@ class Interval(object):
         else:
             raise ValueError('The power value must be a number')
 
-        rounding.setRoundNear()
+        Rounding.setRoundNear()
         return Interval(low, upp)
 
     # overloading operator ** . Means other in the power of self (other is a number)
@@ -262,19 +262,19 @@ class Interval(object):
                 'The base value is {0:f} but it must be either within interval (0, 1) or greater than 1'.format(other))
         else:
             if other > 1:
-                rounding.setRoundDown()
+                Rounding.setRoundDown()
                 low = other**self.low
 
-                rounding.setRoundUp()
+                Rounding.setRoundUp()
                 upp = other**self.upp
             else:
-                rounding.setRoundDown()
+                Rounding.setRoundDown()
                 low = other**self.upp
 
-                rounding.setRoundUp()
+                Rounding.setRoundUp()
                 upp = other**self.low
 
-            rounding.setRoundNear()
+            Rounding.setRoundNear()
             return Interval(low, upp)
 
     def __abs__(self):

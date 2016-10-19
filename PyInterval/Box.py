@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import interval
+from PyInterval import Interval
 
 
 class Box(object):
@@ -18,7 +18,7 @@ class Box(object):
             raise ValueError('The number of lower bounds is not the same as the number of upper bounds!')
         dim = len(low)
         self.size = [dim, 1]
-        self.intervals = [interval.Interval(low[d], upp[d]) for d in range(0, dim)]
+        self.intervals = [Interval(low[d], upp[d]) for d in range(0, dim)]
 
     # overloading indexing operator
     def __getitem__(self, index):
@@ -77,7 +77,7 @@ class Box(object):
         dim = self.size[0]
         if isinstance(other, (int, float)):
             other = Box([other]*dim)
-        elif isinstance(other, interval.Interval):
+        elif isinstance(other, Interval):
             other = Box([other.low]*dim, [other.upp] * dim)
         result = Box([0]*dim)
         result.intervals = [self.intervals[d]*other.intervals[d] for d in range(0, dim)]
@@ -88,7 +88,7 @@ class Box(object):
         dim = self.size[0]
         if isinstance(other, (int, float)):
             other = Box([other]*dim)
-        elif isinstance(other, interval.Interval):
+        elif isinstance(other, Interval):
             other = Box([other.low]*dim, [other.upp]*dim)
         return other.__mul__(self)
 
@@ -110,7 +110,7 @@ class Box(object):
         dim = self.size[0]
         if isinstance(other, (int, float)):
             other = Box([other]*dim)
-        elif isinstance(other, interval.Interval):
+        elif isinstance(other, Interval):
             other = Box([other.low]*dim, [other.upp]*dim)
         return other.__div__(self)
 

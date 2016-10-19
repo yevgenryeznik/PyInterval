@@ -1,8 +1,8 @@
 #!/usr/bin/python
-import rounding
-import interval
-import box
 import numpy as np
+
+import Rounding
+from PyInterval import Interval, Box
 
 
 # elementary functions defined for an argument of the types Interval and Box
@@ -36,10 +36,10 @@ class Function(object):
             return fun(x)
         elif isinstance(x, (list, np.ndarray)):
             if all([isinstance(item, (int, float)) for item in x]):
-                x = box.Box(x)
+                x = Box(x)
                 return self.__call__(x)
-        elif isinstance(x, interval.Interval):
-            result = interval.Interval(0)
+        elif isinstance(x, Interval):
+            result = Interval(0)
 
             # square root function
             if fun == np.sqrt:
@@ -47,10 +47,10 @@ class Function(object):
 
             # exponential function
             elif fun == np.exp:
-                rounding.setRoundDown()
+                Rounding.setRoundDown()
                 result.low = fun(x.low)
 
-                rounding.setRoundUp()
+                Rounding.setRoundUp()
                 result.upp = fun(x.upp)
 
             # logarithmic function
@@ -58,10 +58,10 @@ class Function(object):
                 base = self.base
                 if x.low <= 0:
                     raise ValueError('Lower bound of interval must be > 0')
-                rounding.setRoundDown()
+                Rounding.setRoundDown()
                 result.low = (((0 < base) & (base < 1))*fun(x.upp) + (base > 1)*fun(x.low))/fun(base)
 
-                rounding.setRoundUp()
+                Rounding.setRoundUp()
                 result.upp = (((0 < base) & (base < 1))*fun(x.low) + (base > 1)*fun(x.upp))/fun(base)
 
             # sin function
@@ -73,30 +73,30 @@ class Function(object):
                 s2 = (np.ceil((x.low - 0.5*np.pi)/(2*np.pi)) <= np.floor((x.upp - 0.5*np.pi)/(2*np.pi)))
 
                 if s1 & s2:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     result.low = -1.0
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     result.upp = 1.0
 
                 elif s1 & (not s2):
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     result.low = -1.0
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     result.upp = np.max(fun([x.low, x.upp]))
 
                 elif (not s1) & s2:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     result.low = np.min(fun([x.low, x.upp]))
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     result.upp = 1.0
                 else:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     result.low = np.min(fun([x.low, x.upp]))
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     result.upp = np.max(fun([x.low, x.upp]))
 
             # asin function
@@ -108,25 +108,25 @@ class Function(object):
                     raise ValueError('Upper bound of interval must be <= 1')
 
                 else:
-                    rounding.setRoundDown()
+                    Rounding.setRoundDown()
                     result.low = fun(x.low)
 
-                    rounding.setRoundUp()
+                    Rounding.setRoundUp()
                     result.upp = fun(x.upp)
 
             # atan function
             elif fun == np.arctan:
-                rounding.setRoundDown()
+                Rounding.setRoundDown()
                 result.low = fun(x.low)
 
-                rounding.setRoundUp()
+                Rounding.setRoundUp()
                 result.upp = fun(x.upp)
 
-            rounding.setRoundNear()
+            Rounding.setRoundNear()
             return result
 
-        elif isinstance(x, box.Box):
-            result = box.Box([0]*x.size[0])
+        elif isinstance(x, Box):
+            result = Box([0] * x.size[0])
             result.intervals = [self.__call__(x[d]) for d in range(0, x.size[0])]
             return result
 

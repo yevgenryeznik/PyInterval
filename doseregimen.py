@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
 rcParams['toolbar'] = 'None'
-from interval import *
-from box import *
-from functions import *
+from PyInterval.Interval import *
+from PyInterval.Box import *
+from PyInterval.Functions import *
 
 
 class Concentration(object):

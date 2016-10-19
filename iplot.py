@@ -2,9 +2,10 @@
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 from matplotlib.patches import Rectangle
-from functions import *
-from interval import *
-from box import *
+
+from PyInterval.Box import *
+from PyInterval.Functions import *
+from PyInterval.Interval import *
 
 rcParams['toolbar'] = 'None'
 

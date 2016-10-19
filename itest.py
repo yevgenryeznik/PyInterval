@@ -1,7 +1,18 @@
 #!/usr/bin/python
-from interval import *
-from box import *
-from functions import *
+
+from PyInterval.Functions import *
+from PyInterval.Interval import Interval
+from PyInterval.Algorithms import midpoint
+from PyInterval.Box import Box
+
+
+def fun(x):
+    return sin(cos(exp(x)))
+
+low, upp = -2, 2
+integral_value = midpoint(fun, low, upp)
+
+print integral_value, " ", 2*integral_value.rad
 
 a = Interval(2, 3)
 print 3+a
