@@ -38,4 +38,4 @@ def fcn(x):
 
 
 x = Interval(0.1, 4)
-plot(x, fcn, beans=100, linewd=2)
+plot(x, fcn, beans=200, linewd=2)

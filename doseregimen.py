@@ -35,7 +35,7 @@ class Concentration(object):
 #  F = 0.95
 
 def C(t):
-    concentration = Concentration(d=Interval(0.01, 250), Ka=0.37, Ke=0.2, V=24, F=0.95)
+    concentration = Concentration(d=Interval(240, 250), Ka=0.37, Ke=0.2, V=24, F=0.95)
     return concentration(t)
 
 
