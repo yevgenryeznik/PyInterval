@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python3
 
 from sys import platform as _platform
 from ctypes import cdll

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python3
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
